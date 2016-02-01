@@ -7,7 +7,13 @@ from functions import *
 
 class RootDir():
     """
-    By making this a class object, you can iterate over the thesises stored under them by calling next() onto it.
+    Object to store the folder containing thesises in. It's possible to iterate over the object. By making this a class object, you can iterate over the thesises stored under them by calling next() onto it.
+
+    Methods:
+        list() to list thesises (with filtering)
+        get_stats() to get statistics displayed in the command line for specified optional filters
+        get_stats_id() to get statistics for a single thesis by id
+        get_kml() generate kml-file for a field of study
     """
 
     def __init__(self, path):
@@ -91,10 +97,9 @@ class RootDir():
             the frequency of each entity
             the most frequent persons ('DBpedia:Person' in attribute 'type' of element 'entity')
             the most frequent locations ('DBpedia:Place' in attribute 'type' of element 'entity')
-
-
         """
 
+        #init
         token_counter_total = Counter()
         lemma_counter_total = Counter()
         longest_sentences_total = []
@@ -103,10 +108,11 @@ class RootDir():
         n_filter = 0 #used to calculate average
         n_sent_total = 0
 
+
         for thesis in self(lang=lang, study=study):
             n_filter += 1
 
-            token_counter, lemma_counter, n_sent, longest_sentences, entity_counter = thesis.parse()
+            token_counter, lemma_counter, n_sent, longest_sentences, entity_counter = thesis.parse() #fetch from thesis.parse()
 
             token_counter_total.update(token_counter)
             lemma_counter_total.update(lemma_counter)
@@ -115,7 +121,7 @@ class RootDir():
             longest_sentences_total.extend(longest_sentences)
             entity_counter_total.update(entity_counter)
 
-        #Calling the function!
+        #Calling the statistics!
         calculate_statistics(lang, study, token_counter_total, lemma_counter_total, longest_sentences_total, entity_counter_total, n_filter, n_sent_total)
 
 
@@ -145,7 +151,7 @@ class RootDir():
 
         token_counter, lemma_counter, n_sent, longest_sentences, entity_counter = globals()["thesis" + str(id)].parse()
 
-        #Calling the function!
+        #Calling the statistics!
         calculate_statistics(lang, study, token_counter, lemma_counter, longest_sentences, entity_counter, n_filter, n_sent, id=id, filename=filename)
 
 
@@ -156,6 +162,8 @@ class RootDir():
         Returns a list of id's of thesises available as an object sorted on their id. It is possible to filter them using the following optional keywords:
                 lang
                 study
+
+        Optional argument: verbose (default=False). Enabling this prints a list of corresponding files to the commandline. Otherwise this function is used to filter thesises.
         """
 
         filterlist = []
@@ -174,6 +182,7 @@ class RootDir():
         """
         Initializes a klm-generation based on a field of study. Provides the data needed. Uses function make_kml() to output the file.
 
+        Input argument: study
         """
 
         entity_counter_total = Counter()
@@ -188,6 +197,12 @@ class RootDir():
         make_kml(entity_counter_total, os.path.join(self.path, self.name), study)
 
 class MasterThesis():
+    """
+    Every thesis is made into an object by the RootDir class. That class is used to iterate over the individual thesises, stored in other classes.
+
+    Methods:
+        parse() to read the thesis and supply the necessary information for the statistics gathering.
+    """
 
     def __init__(self, id, filename, field, language):
         self.path = filename
@@ -220,6 +235,7 @@ class MasterThesis():
         lem_gen = root.iterfind('terms/term')
         sent_gen = root.iterfind('text/wf')
         ent_gen = root.iterfind('entities/entity')
+
 
         #TOKENS
         token_list = []

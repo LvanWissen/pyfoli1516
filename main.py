@@ -6,7 +6,7 @@ from functions import *
 from classes import *
 
 # ARGPARSE
-parser = argparse.ArgumentParser(description='Analyze thesises')
+parser = argparse.ArgumentParser(description='Thesis analyzer')
 parser.add_argument('-p', metavar='path', nargs='+', default=[False],
                    help='path to a directory containing thesises')
 parser.add_argument('-l', metavar='list', nargs='?', default=True,
@@ -31,19 +31,23 @@ kml = not(args.kml)
 stats = not(args.s)
 stats_id = args.sid
 
-# check if the inputted path is really an existing directory
+# if no path has been given, ask for one:
 if path == False:
     path = input("Specify path to a folder containing thesises: ")
 
     print("Possible commands to give ")
 
+# check if the inputted path is really an existing directory
 try:
     assert os.path.isdir(path)
 except AssertionError:
     print("Input is not a (valid) directory!")
     raise SystemExit
 
-rootdir = RootDir("C:\\Users\\Leon\\Dropbox\\VU\\4.2 Python\\Periode 3\\Data\\thesis_vu_2015")
+print(path)
+
+rootdir = RootDir(path)
+
 print()
 
 if to_list:
@@ -66,7 +70,8 @@ elif kml:
     print("You must specify a study to generate the kml! See -h for help!")
     raise SystemExit
 
-
+if all((to_list, stats, stats_id, kml)) == False:
+    print("See -h help for possible commands!")
 
 
 
