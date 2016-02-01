@@ -2,6 +2,11 @@ import pickle
 import simplekml
 
 def calculate_statistics(lang, study, token_counter_total, lemma_counter_total, longest_sentences_total, entity_counter_total, n_filter, n_sent_total, id=None, filename=None):
+    """
+    Calculate statistics for both groups of thesises as individual ones.
+
+    Used in both classes, this function generates statistics to the commandline.
+    """
 
     print()
     if id is not None:
