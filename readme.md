@@ -1,9 +1,9 @@
 # Thesis Analyzer
 
-Commandlinetool to generate statistics for *.NAF.nohyphen files. 
+Commandlinetool to generate statistics for *.NAF.nohyphen files.
 
 ### How to use
-    usage: 
+    usage:
         main.py [-h] [-p path [path ...]] [-l [list]] [-lang [language]]
        [-study [study]] [-s [stats]] [-sid [stats_id]] [-kml [kml]]
 
@@ -19,16 +19,16 @@ Commandlinetool to generate statistics for *.NAF.nohyphen files.
       -sid [stats_id]     generate statistics for specified thesis id. Use -l to
                           get the thesis id
       -kml [kml]          generate kml output for specified study (-study)
-      
+
 #### Example usage
 ```sh
-$ python.py -p \home\user\thesis_vu_2015 -l 
+$ main.py -p \home\user\thesis_vu_2015 -l
 ```
 ```sh
-$ python.py -p \home\user\thesis_vu_2015 -s -lang nl -study ltk
+$ main.py -p \home\user\thesis_vu_2015 -s -lang nl -study ltk
 ```
 ```sh
-$ python.py -p \home\user\thesis_vu_2015 -kml -study fil
+$ main.py -p \home\user\thesis_vu_2015 -kml -study fil
 ```
 
 
